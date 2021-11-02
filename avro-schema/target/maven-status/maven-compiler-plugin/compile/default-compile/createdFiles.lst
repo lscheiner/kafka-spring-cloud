@@ -1,0 +1,4 @@
+br\com\scheiner\Employee.class
+br\com\scheiner\Employee$Builder.class
+br\com\scheiner\EmployeeKey$Builder.class
+br\com\scheiner\EmployeeKey.class

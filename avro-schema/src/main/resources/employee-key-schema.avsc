@@ -1,0 +1,10 @@
+{
+	"type": "record",
+	"name": "EmployeeKey",
+	"namespace": "br.com.scheiner",
+	"fields": [
+	{
+		"name": "document",
+		"type": "string"
+	}]
+}
