@@ -1,8 +1,8 @@
 package br.com.scheiner.kafka.producer;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +15,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ProducerService {
 	
-	@Autowired
-    private StreamBridge streamBridge;
+    private KafkaTemplate<EmployeeKey, Employee> kafkaTemplate;
 	
 	public void send (EmployeeDTO employeeDTO) {
 		
@@ -29,10 +28,12 @@ public class ProducerService {
         EmployeeKey employeeKey = new EmployeeKey();
         employeeKey.setDocument(employeeDTO.getDocument());
 
-        this.streamBridge.send("producerSender-out-0", 
-        		MessageBuilder.withPayload(employee)
-    			.setHeader(KafkaHeaders.MESSAGE_KEY, employeeKey)
-    			.build());
+        Message<Employee> message = MessageBuilder
+                .withPayload(employee)
+                .setHeader(KafkaHeaders.TOPIC, "topico-dest")
+                .setHeader(KafkaHeaders.KEY, employeeKey)
+                .build();
+        
+        this.kafkaTemplate.send(message);
 	}
-
 }
